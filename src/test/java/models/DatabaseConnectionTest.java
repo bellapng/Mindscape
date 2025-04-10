@@ -8,6 +8,11 @@ import java.sql.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class is used to test if the connection to the database is successful or not.
+ * Please ensure that the mindscape.sqlite file in src/main/java/database is listed as the DATABASE_URL
+ * @author Isabella Castillo
+ */
 class DatabaseConnectionTest {
 
     @Test

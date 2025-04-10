@@ -61,13 +61,13 @@ public class FavoriteResourcesDAO {
      * Useful for user searches.
      * 
      * @param  keyword                Word that represents our search value for query.
-     * @return List<FavoriteResource> Returns the valid search results in a list.
+     * @return List<FavoriteResource> Returns the valid search results (case-insensitive) in a list.
      * @throws SQLException           If an error occurs.
      */
     public List<FavoriteResource> searchFavorites(String keyword) throws SQLException {
 
         List<FavoriteResource> results = new ArrayList<>();
-        String query = "SELECT * FROM favorite_resources WHERE name LIKE ? OR address LIKE ?";
+        String query = "SELECT * FROM favorite_resources WHERE LOWER(name) LIKE LOWER(?) OR LOWER(address) LIKE LOWER(?)";
 
         try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 

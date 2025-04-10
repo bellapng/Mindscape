@@ -3,12 +3,13 @@ package models;
 import java.sql.*;
 
 /**
- * Class to establish a method to connect to local SQLite database hosted on users system.
+ * Class to establish a method to connect to local SQLite database hosted on user's system.
+ *
  * @author Isabella Castillo
  */
 public class DatabaseConnection {
 
-    private static final String DATABASE_URL = "jdbc:sqlite:mindscape.db";
+    private static final String DATABASE_URL = "jdbc:sqlite:src/main/java/database/mindscape.sqlite";
 
     // To prevent accidental object instantiation
     private DatabaseConnection() {}
