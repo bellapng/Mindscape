@@ -35,7 +35,7 @@ public class ExerciseEntry {
         this.endTime = endTime;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the ExerciseEntry object.
      */
     public int getLogID() { return logID; }

@@ -6,22 +6,27 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.util.*;
+
 import models.FavoriteResource;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for FavoriteResourcesDAO.java.
+ * Each test matches the name of the method in the FavoriteResourcesDAO class and has descriptive comments.
  * @author Isabella Castillo
  */
 class FavoriteResourcesDAOTest {
 
+
     private FavoriteResourcesDAO dao;
+
 
     @BeforeEach
     void setUp() {
 
         dao = new FavoriteResourcesDAO();
     }
+
 
     @AfterEach
     void tearDown() {
@@ -31,15 +36,15 @@ class FavoriteResourcesDAOTest {
             // Deleting test entries after each test as to not corrupt database, but also test the real thing
             List<FavoriteResource> favorites = dao.getAllFavorites();
 
-            for (FavoriteResource r : favorites) {
-                if (r.getName().contains("Test")) {
-                    dao.deleteFavorite(r.getResourceID());
-                }
+            for (FavoriteResource resource : favorites) {
+
+                dao.deleteFavorite(resource.getResourceID());
             }
         } catch (SQLException e) {
             System.err.println("tearDown failed: " + e.getMessage());
         }
     }
+
 
     @Test
     void getAllFavorites() {
@@ -72,9 +77,10 @@ class FavoriteResourcesDAOTest {
             assertTrue(favorites.size() >= 2, "Expected at least 2 resources in the favorites list");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in getAllFavorites: " + e.getMessage());
         }
     }
+
 
     @Test
     void getFavoriteByID() {
@@ -87,13 +93,12 @@ class FavoriteResourcesDAOTest {
 
             // Retrieving all favorites to find our ID we are looking for
             List<FavoriteResource> allFavorites = dao.getAllFavorites();
-            FavoriteResource insertedTestResource = allFavorites.stream().filter(r -> r.getName().equals("Test Resource"))
-                                                .findFirst().orElseThrow(() -> new AssertionError("Failed to find inserted test resource"));
+            FavoriteResource insertedTestResource = allFavorites.stream().findFirst().orElseThrow(()-> new AssertionError("Inserted test resource was not found. "));
 
             // Perform test and verify retrieved results to check for matching ID
             FavoriteResource foundResource = dao.getFavoriteByID(insertedTestResource.getResourceID());
-
             assertNotNull(foundResource, "Retrieved resource should not be null");
+
             assertEquals(insertedTestResource.getResourceID(), foundResource.getResourceID(), "Resource IDs should match");
             assertEquals("Test Resource", foundResource.getName(), "Resource names should match");
             assertEquals("123 Test Address", foundResource.getAddress(), "Resource addresses should match");
@@ -101,11 +106,10 @@ class FavoriteResourcesDAOTest {
             assertEquals("http://testresource.com", foundResource.getWebsite(), "Resource websites should match");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in getFavoriteByID: " + e.getMessage());
         }
-
-
     }
+
 
     @Test
     void searchFavorites() {
@@ -137,14 +141,15 @@ class FavoriteResourcesDAOTest {
             assertFalse(isNonMatchingResourceFound, "The resource without 'Clinic' should NOT be found in search results");
 
             // Testing that the search is NOT case sensitive
-            List<FavoriteResource> lowercaseSearchResults = dao.searchFavorites("clinic");
+            List<FavoriteResource> lowercaseSearchResults = dao.searchFavorites("CLINIC");
             boolean isMatchingResourceFoundInLowercaseSearch = lowercaseSearchResults.stream().anyMatch(resource -> resource.getName().equals("Test Clinic Resource"));
             assertTrue(isMatchingResourceFoundInLowercaseSearch, "Search should be case-insensitive");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in searchFavorites: " + e.getMessage());
         }
     }
+
 
     @Test
     void isResourceAlreadyFavorited() {
@@ -168,9 +173,10 @@ class FavoriteResourcesDAOTest {
             assertFalse(partialMatch, "Resource with matching name but different address should not be detected as already favorited");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in isResourceAlreadyFavorites: " + e.getMessage());
         }
     }
+
 
     @Test
     void insertFavorite() {
@@ -182,7 +188,7 @@ class FavoriteResourcesDAOTest {
             boolean insertionSuccess = dao.insertFavorite(testResource);
             assertTrue(insertionSuccess, "The resource should have been inserted successfully");
 
-            // Checking that the resource was actually inserted by calling getAllFavorites
+            // Double checking that the resource was actually inserted by calling getAllFavorites
             List<FavoriteResource> favorites = dao.getAllFavorites();
             boolean isResourceInserted = favorites.stream().anyMatch(resource -> resource.getName().equals("Test Resource") &&
                                          resource.getAddress().equals("123 Test Address") && Objects.equals(resource.getPhoneNumber(), "123-456-7890")
@@ -191,9 +197,10 @@ class FavoriteResourcesDAOTest {
             assertTrue(isResourceInserted, "The inserted resource should be found in the database");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in insertFavorite: " + e.getMessage());
         }
     }
+
 
     @Test
     void updateFavorite() {
@@ -202,13 +209,11 @@ class FavoriteResourcesDAOTest {
 
             // Declaring and inserting test resource while checking that it was inserted, should return true
             FavoriteResource testResource = new FavoriteResource(0, "Test Resource", "123 Test Address", "123-456-7890", "http://testresource.com");
-            boolean insertSuccess = dao.insertFavorite(testResource);
-            assertTrue(insertSuccess, "The resource should have been updated successfully");
+            dao.insertFavorite(testResource);
 
             // Finding the inserted resource to get its ID
             List<FavoriteResource> favorites = dao.getAllFavorites();
-            FavoriteResource insertedResource = favorites.stream().filter(r -> r.getName().equals("Test Resource")).findFirst()
-                                                .orElseThrow(() -> new AssertionError("Failed to find inserted test resource"));
+            FavoriteResource insertedResource = favorites.stream().findFirst().orElseThrow(() -> new AssertionError("Failed to find inserted test resource"));
 
             // Creating an updated version of the test resource with the same ID
             FavoriteResource updatedResource = new FavoriteResource(insertedResource.getResourceID(), "Test Resource Updated", "456 Update Street"
@@ -228,9 +233,10 @@ class FavoriteResourcesDAOTest {
             assertEquals("http://testresourceupdated.com", retrievedResource.getWebsite(), "Website should be updated");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in updateFavorite: " + e.getMessage());
         }
     }
+
 
     @Test
     void deleteFavorite() {
@@ -239,13 +245,11 @@ class FavoriteResourcesDAOTest {
 
             // Declaring and inserting test resource while checking that it was inserted, should return true
             FavoriteResource testResource = new FavoriteResource(0, "Test Resource", "123 Test Address", "123-456-7890", "http://testresource.com");
-            boolean insertSuccess = dao.insertFavorite(testResource);
-            assertTrue(insertSuccess, "The resource should have been updated successfully");
+            dao.insertFavorite(testResource);
 
             // Finding the inserted resource to get its ID
             List<FavoriteResource> favorites = dao.getAllFavorites();
-            FavoriteResource insertedResource = favorites.stream().filter(r -> r.getName().equals("Test Resource") && r.getAddress().equals("123 Test Address"))
-                                                .findFirst().orElseThrow(() -> new AssertionError("Failed to find inserted test resource"));
+            FavoriteResource insertedResource = favorites.stream().findFirst().orElseThrow(() -> new AssertionError("Failed to find inserted test resource"));
 
             // Checking that the resource exists in database before deletion
             FavoriteResource resourceBeforeDeletion = dao.getFavoriteByID(insertedResource.getResourceID());
@@ -260,7 +264,7 @@ class FavoriteResourcesDAOTest {
             assertNull(resourceAfterDeletion, "Resource should not exist after deletion");
 
         } catch (SQLException e) {
-            fail("An SQL exception occurred: " + e.getMessage());
+            fail("SQL error in deleteFavorite: " + e.getMessage());
         }
     }
 }

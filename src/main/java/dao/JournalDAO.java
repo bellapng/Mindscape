@@ -1,11 +1,12 @@
 package dao;
 
-import models.DatabaseConnection;
-import models.JournalEntry;
 import java.sql.*;
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+
+import models.DatabaseConnection;
+import models.JournalEntry;
 
 /**
  * Data Access Object for main program to manage journal entries.
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 public class JournalDAO {
 
     private static final DateTimeFormatter DB_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 
     /**
      * Gets all the journal entries in database, sorted from the newest to oldest.
@@ -100,7 +102,7 @@ public class JournalDAO {
      * @return List<JournalEntry> Returns the valid results in a list.
      * @throws SQLException       If an error occcurs.
      */
-    public List<JournalEntry> getMoodEntriesByDateRange(LocalDateTime start, LocalDateTime end) throws SQLException {
+    public List<JournalEntry> getJournalEntriesByDateRange(LocalDateTime start, LocalDateTime end) throws SQLException {
 
         List<JournalEntry> entries = new ArrayList<>();
         String query = "SELECT * FROM journal WHERE entry_date_and_time BETWEEN ? AND ? ORDER BY entry_date_and_time";
@@ -140,6 +142,7 @@ public class JournalDAO {
         }
     }
 
+
     /**
      * Updates a known journal entry in the database.
      * Useful for using together with search functions to find and update entries by user request.
@@ -160,6 +163,7 @@ public class JournalDAO {
             return pstmt.executeUpdate() > 0; // Returns true if updated successfully
         }
     }
+
 
     /**
      * Deletes a journal entry in the database.

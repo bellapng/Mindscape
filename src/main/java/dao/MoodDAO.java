@@ -1,12 +1,13 @@
 package dao;
 
-import models.DatabaseConnection;
-import models.Mood;
-import models.MoodEntry;
 import java.sql.*;
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+
+import models.DatabaseConnection;
+import models.Mood;
+import models.MoodEntry;
 
 /**
  * Data Access Object for main program to manage moods and mood entries.
@@ -68,31 +69,6 @@ public class MoodDAO {
 
 
     /**
-     * Finds a mood ID by its name (case sensitive).
-     * Useful for insertion.
-     * 
-     * @param  moodName     Name of mood we are attempting to find ID for.
-     * @return Mood         Mood object of that specific mood name or -1 if not found.
-     * @throws SQLException If an error occurs.
-     */
-    public Mood getMoodByName(String moodName) throws SQLException {
-
-        String query = "SELECT * FROM moods WHERE mood = ?";
-
-        try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            pstmt.setString(1, moodName);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return new Mood(rs.getInt("mood_id"), rs.getString("mood"));
-            }
-        }
-        return null;
-    }
-
-
-    /**
      * Finds a mood object by it's assigned ID.
      * Useful for display and search purposes.
      * 
@@ -102,7 +78,7 @@ public class MoodDAO {
      */
     public Mood getMoodByID(int id) throws SQLException {
 
-        String query = "SELECT mood FROM moods WHERE mood_id = ?";
+        String query = "SELECT * FROM moods WHERE mood_id = ?";
 
         try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 
@@ -227,7 +203,7 @@ public class MoodDAO {
      */
     public boolean updateMoodEntry(MoodEntry entry) throws SQLException {
 
-        String query = "UPDATE mood_entries SET mood_id = ?, tag = ?, WHERE entry_id = ?";
+        String query = "UPDATE mood_entries SET mood_id = ?, tag = ? WHERE entry_id = ?";
 
         try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
 

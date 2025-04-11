@@ -28,7 +28,7 @@ public class JournalEntry {
         this.entryDateTime = entryDateTime;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the JournalEntry object.
      */
     public int getJournalID() { return journalID; }

@@ -29,7 +29,7 @@ public class FavoriteResource {
         this.website = website;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the FavoriteResource object.
      */
     public int getResourceID() { return resourceID; }

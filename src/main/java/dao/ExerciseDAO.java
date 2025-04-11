@@ -1,12 +1,13 @@
 package dao;
 
-import models.DatabaseConnection;
-import models.Exercise;
-import models.ExerciseEntry;
 import java.sql.*;
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+
+import models.DatabaseConnection;
+import models.Exercise;
+import models.ExerciseEntry;
 
 /**
  * Data Access Object for main program to manage exercises and exercise entries.
@@ -15,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class ExerciseDAO {
 
     private static final DateTimeFormatter DB_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 
     /**
      * Retrieves the 3 predefined exercises from the database.
@@ -36,6 +38,7 @@ public class ExerciseDAO {
         }
         return exercises;
     }
+
 
     /**
      * Finds a predefined exercise by it's assigned ID.
@@ -61,6 +64,33 @@ public class ExerciseDAO {
         return null;
     }
 
+
+    /**
+     * Finds an entry within the exercise entry database via its ID.
+     * Useful for testing and controller purposes.
+     *
+     * @param  logID         Unique ID assigned to the specific log entry (1 - infinity)
+     * @return ExerciseEntry Returns the exercise entry associated with the log ID.
+     * @throws SQLException  If an error occurs.
+     */
+    public ExerciseEntry getExerciseEntryByID(int logID) throws SQLException{
+
+        String query = "SELECT * FROM exercise_entries WHERE log_id = ?";
+
+        try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, logID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new ExerciseEntry(rs.getInt("log_id"), rs.getInt("exercise_id"), rs.getInt("mood_before_id"), rs.getInt("mood_after_id"),
+                            LocalDateTime.parse(rs.getString("start_time"), DB_DATE_FORMAT), LocalDateTime.parse(rs.getString("end_time"), DB_DATE_FORMAT));
+            }
+        }
+        return null;
+    }
+
+
     /**
      * Gets a list of all the exercise entries within the database.
      * Useful for data analysis and future charting/graphing.
@@ -82,6 +112,7 @@ public class ExerciseDAO {
         }
         return entries;
     }
+
 
     /**
      * Gets a list of exercise entries within a specific range within the database.
@@ -110,6 +141,7 @@ public class ExerciseDAO {
         }
         return entries;
     }
+
 
     /**
      * Inserts exercise entry objects into the database.
@@ -152,6 +184,7 @@ public class ExerciseDAO {
         }
     }
 
+
     /**
      * Updates the mood before the exercise.
      * Useful for post-exercise logging in which the user forgets to add their mood and they want to later.
@@ -174,6 +207,7 @@ public class ExerciseDAO {
 
     }
 
+
     /**
      * Updates the mood after the exercise.
      * Useful for post-exercise logging in which the user forgets to add their mood and they want to later.
@@ -194,6 +228,7 @@ public class ExerciseDAO {
             return pstmt.executeUpdate() > 0; // Will return true upon successful update
         }
     }
+
 
     /**
      * Deletes an exercise entry by ID.

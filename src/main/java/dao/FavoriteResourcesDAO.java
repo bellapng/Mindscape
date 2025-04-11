@@ -1,15 +1,17 @@
 package dao;
 
-import models.DatabaseConnection;
-import models.FavoriteResource;
 import java.sql.*;
 import java.util.*;
+
+import models.DatabaseConnection;
+import models.FavoriteResource;
 
 /**
  * Data Access Object for main program to manage favorite resources the user selects from searches via Google Places API.
  * @author Isabella Castillo
  */
 public class FavoriteResourcesDAO {
+
 
     /**
      * Gets a list of all the favorite resources within the database.
@@ -31,6 +33,7 @@ public class FavoriteResourcesDAO {
         }
         return favorites;
     }
+
 
     /**
      * Finds a resource by it's assigned ID.
@@ -55,6 +58,7 @@ public class FavoriteResourcesDAO {
         }
         return null;
     }
+
 
     /**
      * Searches the database of entries (resource name and address since those are required) by keyword.
@@ -83,6 +87,7 @@ public class FavoriteResourcesDAO {
         return results;
     }
 
+
     /**
      * Checks if the resource is already favorited.
      * Useful for checks before adding to database.
@@ -105,6 +110,7 @@ public class FavoriteResourcesDAO {
             return rs.next() && rs.getInt("count") > 0; // Will return true if already favorited or false if not.
         }
     }
+
 
     /**
      * Inserts favorite resource objects into the database.
@@ -129,6 +135,7 @@ public class FavoriteResourcesDAO {
         }
     }
 
+
     /**
      * Updates a known favorite resource entry in the database.
      * Useful for using together with search functions to find and update entries by user request.
@@ -152,6 +159,7 @@ public class FavoriteResourcesDAO {
             return pstmt.executeUpdate() > 0;
         }
     }
+
 
     /**
      * Deletes a favorite resource entry in the database.

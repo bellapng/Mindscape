@@ -24,14 +24,14 @@ public class Exercise {
         this.exerciseDescription = exerciseDescription;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the Exercise object.
      */
     public int getExerciseID() { return exerciseID; }
     public String getExerciseName() { return exerciseName; }
     public String getExerciseDescription() { return exerciseDescription; }
 
-    /*
+    /**
      * Set of setters for parameters within the Exercise object.
      */
     public void setExerciseID(int exerciseID) { this.exerciseID = exerciseID; }
