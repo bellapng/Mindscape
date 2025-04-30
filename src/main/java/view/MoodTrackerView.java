@@ -1,4 +1,4 @@
-package main;
+package view;
 
 import dao.MoodDAO;
 import javafx.geometry.Insets;

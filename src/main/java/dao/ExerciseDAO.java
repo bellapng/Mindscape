@@ -147,15 +147,15 @@ public class ExerciseDAO {
      * Inserts exercise entry objects into the database.
      * Useful for inserting new ExerciseEntry objects into the database.
      * 
-     * @param  entry   A ExerciseEntry type variable of the entry using ExerciseEntry.java to add to database.
-     * @return boolean Returns T/F based on if the insertion is successful or not.
+     * @param  entry        A ExerciseEntry type variable of the entry using ExerciseEntry.java to add to database.
+     * @return int          Returns the key (entry ID) of inserted entry
      * @throws SQLException If an error occurs.
      */
-    public boolean insertExerciseEntry(ExerciseEntry entry) throws SQLException {
+    public int insertExerciseEntry(ExerciseEntry entry) throws SQLException {
 
         String query = "INSERT INTO exercise_entries (exercise_id, mood_before_id, mood_after_id, start_time, end_time) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setInt(1, entry.getExerciseID());
 
@@ -180,7 +180,14 @@ public class ExerciseDAO {
             pstmt.setString(4, entry.getStartTime().format(DB_DATE_FORMAT));
             pstmt.setString(5, entry.getEndTime().format(DB_DATE_FORMAT));
 
-            return pstmt.executeUpdate() > 0;   // Will return true upon successful insertion
+            pstmt.executeUpdate();
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                } else {
+                    throw new SQLException("Inserting exercise entry failed, no ID was obtained.");
+                }
+            }
         }
     }
 
@@ -246,6 +253,27 @@ public class ExerciseDAO {
 
             pstmt.setInt(1, logID);
             return pstmt.executeUpdate() > 0; // Will return true upon successful deletion
+        }
+    }
+
+    /**
+     * Updates an exercise entry's end time.
+     * Useful for when users finish and exercise, and we want to record the exact time.
+     *
+     * @param logID         The logs unique ID for accessing and updating it.
+     * @param endTime       The end time for the users exercise.
+     * @return boolean      Returns T/F based on if the update was successful or not.
+     * @throws SQLException If an error occurs.
+     */
+    public boolean updateExerciseEndTime(int logID, LocalDateTime endTime) throws SQLException {
+
+        String query = "UPDATE exercise_entries SET end_time = ? WHERE log_id = ?";
+
+        try (Connection conn = DatabaseConnection.connect(); PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, endTime.format(DB_DATE_FORMAT));
+            pstmt.setInt(2, logID);
+            return pstmt.executeUpdate() > 0;
         }
     }
 }
