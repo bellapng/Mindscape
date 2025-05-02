@@ -431,13 +431,13 @@ public class MoodTrackerView {
 
                 try {
 
+                    // Displaying proper alert and resetting button
                     if (controller.updateMoodEntry(updatedEntry)) {
 
                         showAlert("Mood updated successfully!");
                         moodChoice.setValue(null);
                         tagField.clear();
 
-                        // Resetting submit button back to how it was
                         submitButton.setText("Submit Mood");
                         submitButton.setOnAction(event2 -> handleSubmit());
                         selectedEntry = null;
@@ -546,7 +546,7 @@ public class MoodTrackerView {
                 }
             });
 
-            // Prevent outside interaction and display
+            // Preventing outside interaction and display
             overlay.setOnMouseClicked(event -> event.consume());
             dialogStage.show();
             dialogStage.setWidth(stage.getWidth());

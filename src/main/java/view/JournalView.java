@@ -294,7 +294,7 @@ public class JournalView {
         String keyword = searchField.getText().trim();
         if (keyword.isEmpty()) { loadAllJournalEntries(); return; }
 
-        // Search entries via keyword in database, display popup error if results are empty
+        // Searching entries via keyword in database, display popup error if results are empty
         try {
 
             List<JournalEntry> results = controller.searchJournalEntries(keyword);
@@ -491,14 +491,6 @@ public class JournalView {
             overlay.setMinWidth(scene.getWidth());
             overlay.setMinHeight(scene.getHeight());
 
-            // Keep the dialog centered over the main window if it moves
-            stage.xProperty().addListener((obs, oldVal, newVal) -> dialogStage.setX(newVal.doubleValue()));
-            stage.yProperty().addListener((obs, oldVal, newVal) -> dialogStage.setY(newVal.doubleValue()));
-
-            // Keep the dialog sized with the main window if it resizes
-            stage.widthProperty().addListener((obs, oldVal, newVal) -> dialogStage.setWidth(newVal.doubleValue()));
-            stage.heightProperty().addListener((obs, oldVal, newVal) -> dialogStage.setHeight(newVal.doubleValue()));
-
             // Setting up button actions
             cancelButton.setOnAction(event -> dialogStage.close());
             confirmButton.setOnAction(event -> {
@@ -525,7 +517,7 @@ public class JournalView {
                 }
             });
 
-            // Prevent outside interaction and display
+            // Preventing outside interaction and display
             overlay.setOnMouseClicked(event -> event.consume());
             dialogStage.show();
             dialogStage.setWidth(stage.getWidth());
@@ -539,6 +531,7 @@ public class JournalView {
      */
     private void loadAllJournalEntries() {
 
+        // Accessing controller which accesses the DAO to retrieve journal entries in database
         try {
 
             List<JournalEntry> entries = controller.getAllJournalEntries();
