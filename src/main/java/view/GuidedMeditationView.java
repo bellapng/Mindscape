@@ -57,7 +57,7 @@ public class GuidedMeditationView {
             moods = controller.getMoodList();
 
         } catch (SQLException e) {
-            showAlert("Failed to load moods: " + e.getMessage());
+            showAlert("Error: " + e.getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ public class GuidedMeditationView {
             root.getChildren().add(card);
 
         } catch (SQLException e) {
-            showAlert("Failed to load exercises: " + e.getMessage());
+            showAlert("Error: " + e.getMessage());
         }
     }
 
@@ -156,7 +156,7 @@ public class GuidedMeditationView {
         detailPane.setPadding(new Insets(0));
 
         // Creating back button
-        Button back = new Button("← Back to Exercises");
+        Button back = new Button("← Back");
         back.getStyleClass().add("action-button");
         back.setOnAction(event -> { root.getChildren().clear(); root.getChildren().addAll(title, new StackPane(exerciseButtonContainer)); loadExerciseList(); });
 
@@ -253,7 +253,7 @@ public class GuidedMeditationView {
         try {
 
             if (!controller.startExercise(selectedExercise.getExerciseID(), moodID)) {
-                showAlert("Could not start exercise.");
+                showAlert("Error: Could not start exercise.");
                 return;
             }
 
@@ -341,7 +341,7 @@ public class GuidedMeditationView {
             try {
 
                 if (!controller.stopExercise(moodID)) {
-                    showAlert("Could not stop exercise.");
+                    showAlert("Error: Could not stop exercise.");
                     return;
                 }
 
