@@ -21,15 +21,9 @@ public class Mood {
         this.moodName = moodName;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the Mood object.
      */
     public int getMoodID() { return moodID; }
     public String getMoodName() { return moodName; }
-
-    /*
-     * Set of setters for parameters within the Mood object.
-     */
-    public void setMoodID(int moodID) { this.moodID = moodID; }
-    public void setMoodName(String moodName) { this.moodName = moodName; }
 }

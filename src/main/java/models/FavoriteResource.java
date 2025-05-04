@@ -37,12 +37,4 @@ public class FavoriteResource {
     public String getAddress() { return address; }
     public String getPhoneNumber() { return phoneNumber; }
     public String getWebsite() { return website; }
-
-    /**
-     * Set of setters for parameters within the FavoriteResource object.
-     */
-    public void setName(String name) { this.name = name; }
-    public void setAddress(String address) { this.address = address; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public void setWebsite(String website) { this.website = website; }
 }

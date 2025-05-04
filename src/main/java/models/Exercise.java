@@ -30,12 +30,4 @@ public class Exercise {
     public int getExerciseID() { return exerciseID; }
     public String getExerciseName() { return exerciseName; }
     public String getExerciseDescription() { return exerciseDescription; }
-
-    /**
-     * Set of setters for parameters within the Exercise object.
-     */
-    public void setExerciseID(int exerciseID) { this.exerciseID = exerciseID; }
-    public void setExerciseName(String exerciseName) { this.exerciseName = exerciseName; }
-    public void setExerciseDescription(String exerciseDescription) { this.exerciseDescription = exerciseDescription; }
-    
 }

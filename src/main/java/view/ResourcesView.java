@@ -23,6 +23,7 @@ import java.util.*;
 /**
  * A view that lets the user search Google Places for local therapists/clinics,
  * displays expandable tiles, and opens links in the default browser.
+ * @author Pike Dzurny
  */
 public class ResourcesView {
     /** DTO for each place. */

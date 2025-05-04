@@ -35,12 +35,4 @@ public class JournalEntry {
     public String getTitle() { return title; }
     public String getTextEntry() { return textEntry; }
     public LocalDateTime getEntryDateTime() { return entryDateTime; }
-
-    /**
-     * Set of setters for parameters within the JournalEntry object.
-     */
-    public void setJournalID(int journalID) { this.journalID = journalID; }
-    public void setTitle(String title) { this.title = title; }
-    public void setTextEntry(String textEntry) { this.textEntry = textEntry; }
-    public void setEntryDateTime(LocalDateTime entryDateTime) { this.entryDateTime = entryDateTime; }
 }

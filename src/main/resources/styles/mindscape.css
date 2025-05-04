@@ -226,7 +226,7 @@
 }
 
 
-/* HTML editor styling */
+/* Journal styling */
 .html-editor {
 
     -fx-background-color: #2a2b30;
@@ -353,6 +353,52 @@
 
 .table-row-cell {
     -fx-table-cell-border-color: transparent;
+}
+
+
+/* Line chat styling */
+.default-color0.chart-line-symbol {
+
+    -fx-background-color: white, #768894;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+
+/* Bar chart styling */
+.default-color0.chart-bar {
+
+    -fx-bar-fill: #768894;
+}
+
+.default-color1.chart-bar {
+
+    -fx-bar-fill: #738265;
+}
+
+.chart-legend-item.symbol.default-color0 {
+
+    -fx-background-color: #768894;
+}
+
+.chart-legend-item.symbol.default-color1 {
+
+    -fx-background-color: #738265;
+}
+
+
+/* Pie chart styling */
+.chart-pie {
+
+    -fx-border-color: #333333;
+    -fx-border-width: 1px;
+}
+
+.chart-pie-label {
+
+    -fx-fill: #E0E0E0;
+    -fx-font-size: 14px;
 }
 
 

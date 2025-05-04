@@ -29,19 +29,11 @@ public class MoodEntry {
         this.dateAndTime = dateAndTime;
     }
 
-    /*
+    /**
      * Set of getters for parameters within the MoodEntry object.
      */
     public int getEntryID() { return entryID; }
     public int getMoodID() { return moodID; }
     public String getTag() { return tag; }
     public LocalDateTime getDateAndTime() { return dateAndTime; }
-
-    /*
-     * Set of setters for parameters within the MoodEntry object.
-     */
-    public void setEntryID(int entryID) { this.entryID = entryID; }
-    public void setMoodID(int moodID) { this.moodID = moodID; }
-    public void setTag(String tag) { this.tag = tag; }
-    public void setDateAndTime(LocalDateTime dateAndTime) { this.dateAndTime = dateAndTime; }
 }

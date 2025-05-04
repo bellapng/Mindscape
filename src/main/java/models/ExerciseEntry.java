@@ -44,14 +44,4 @@ public class ExerciseEntry {
     public Integer getMoodAfterID() { return moodAfterID; }
     public LocalDateTime getStartTime() { return startTime; }
     public LocalDateTime getEndTime() { return endTime; }
-
-    /**
-     * Set of setters for parameters within the ExerciseEntry object.
-     */
-    public void setLogID(int logID) { this.logID = logID; }
-    public void setExerciseID(int exerciseID) { this.exerciseID = exerciseID; }
-    public void setMoodBeforeID(Integer moodBeforeID) { this.moodBeforeID = moodBeforeID; }
-    public void setMoodAfterID(Integer moodAfterID) { this.moodAfterID = moodAfterID; }
-    public void setStartTime(LocalDateTime startTime) { this.startTime = startTime; }
-    public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
 }

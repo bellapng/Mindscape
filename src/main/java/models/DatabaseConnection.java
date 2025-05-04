@@ -4,7 +4,6 @@ import java.sql.*;
 
 /**
  * Class to establish a method to connect to local SQLite database hosted on user's system.
- *
  * @author Isabella Castillo
  */
 public class DatabaseConnection {
