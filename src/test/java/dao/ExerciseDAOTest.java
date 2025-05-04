@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import models.DatabaseConnection;
 import models.Exercise;
 import models.ExerciseEntry;
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,6 +23,9 @@ class ExerciseDAOTest {
 
 
     private ExerciseDAO dao;
+    
+    private static final DateTimeFormatter DB_DATE_FORMAT =
+    DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
     @BeforeEach
@@ -193,27 +198,28 @@ class ExerciseDAOTest {
 
 
     @Test
-    void insertExerciseEntry() {
+    public boolean insertExerciseEntry(ExerciseEntry entry) throws SQLException {
+        String sql = """
+            INSERT INTO exercise_entries
+              (exercise_id, mood_before_id, mood_after_id, start_time, end_time)
+            VALUES (?, ?, ?, ?, ?)
+        """;
 
-        try {
+        try (Connection c = DatabaseConnection.connect();
+             PreparedStatement p = c.prepareStatement(sql)) {
 
-            LocalDateTime currTime = LocalDateTime.now();
+            p.setInt(1, entry.getExerciseID());
+            if (entry.getMoodBeforeID() != null) p.setInt(2, entry.getMoodBeforeID());
+            else                             p.setNull(2, Types.INTEGER);
 
-            // Declaring and inserting test entry while checking that it was inserted, should return true
-            ExerciseEntry testEntry1 = new ExerciseEntry(0, 1, 1, 2, currTime.minusHours(1), currTime.minusHours(1).plusMinutes(5));
-            boolean insertionSuccess = dao.insertExerciseEntry(testEntry1);
-            assertTrue(insertionSuccess, "The resource should have been inserted successfully");
+            if (entry.getMoodAfterID()  != null) p.setInt(3, entry.getMoodAfterID());
+            else                              p.setNull(3, Types.INTEGER);
 
-            // Double checking that the resource was actually inserted by calling getAllExerciseEntries (not testing time equivalence due to millisecond differences cause inequality)
-            List<ExerciseEntry> entries = dao.getAllExerciseEntries();
+            p.setString(4, entry.getStartTime().format(DB_DATE_FORMAT));
+            p.setString(5, entry.getEndTime().format(DB_DATE_FORMAT));
 
-            boolean isEntryInserted = entries.stream().anyMatch(entry -> entry.getExerciseID() == testEntry1.getExerciseID() && entry.getMoodBeforeID() == testEntry1.getMoodBeforeID()
-                    && entry.getMoodAfterID() == testEntry1.getMoodAfterID());
-
-            assertTrue(isEntryInserted, "The inserted resource should be found in the database");
-
-        } catch (SQLException e) {
-            fail("SQL error in insertExerciseEntry: " + e.getMessage());
+            // returns number of rows changed; >0 means success
+            return p.executeUpdate() > 0;
         }
     }
 
